@@ -751,8 +751,9 @@ public class EffectTrackingEditor : EditorWindow
                 EditorUtility.DisplayProgressBar("Effect Tracking", "Collecting all effect prefabs...", progress/total);
                 var path = AssetDatabase.GUIDToAssetPath(guid);
                 var materialPath = GetMaterialPath(path) ?? "";
-                
-                Object thisObject = AssetDatabase.LoadAssetAtPath<SMPEffectProperty>(path);
+
+                Object thisObject = null; 
+                    //AssetDatabase.LoadAssetAtPath<SMPEffectProperty>(path);
                 if (thisObject == null)
                 {
                     thisObject = AssetDatabase.LoadAssetAtPath<ParticleSystem>(path);

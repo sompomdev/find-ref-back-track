@@ -96,12 +96,35 @@ using UnityEditor;
          // find all fields exposed in the editor as per https://answers.unity.com/questions/1333022/how-to-get-every-public-variables-from-a-script-in.html
          SerializedObject serObj = new SerializedObject(component);
          SerializedProperty prop = serObj.GetIterator();
+         
+         //Debug.Log($"Dest references value : {references.name} {references.GetInstanceID()}");
          while (prop.NextVisible(true))
          {
+             // if (prop.objectReferenceValue != null)
+             //    Debug.Log($"objectReferenceValue : {prop.objectReferenceValue.GetInstanceID()}");
+             
              bool isObjectField = prop.propertyType == SerializedPropertyType.ObjectReference && prop.objectReferenceValue != null;
-             if (isObjectField && prop.objectReferenceValue == references)
+             if (isObjectField ) 
+                 //&& prop.objectReferenceValue == references)
              {
-                 ReferencingSelection.Add(component);
+                 // Debug.Log($"objectReferenceValue : {prop.name} - {prop.objectReferenceInstanceIDValue}");
+                 if (prop.objectReferenceValue == references)
+                 {
+                     Debug.Log($"Found ref : {prop.name}");
+                     if (!ReferencingSelection.Contains(component))
+                     {
+                         ReferencingSelection.Add(component);
+                     }
+                 }
+                 else if (prop.objectReferenceInstanceIDValue == references.gameObject.GetInstanceID())
+                 {
+                     Debug.Log($"Found ref : {prop.name}");
+                     if (!ReferencingSelection.Contains(component))
+                     {
+                         ReferencingSelection.Add(component);
+                     }
+                 }
+                 //ReferencingSelection.Add(component);
              }
          }
      }

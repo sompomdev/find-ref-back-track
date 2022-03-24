@@ -1,7 +1,7 @@
 {
-    "name": "SompomGames.Template.Editor",
+    "name": "SompomGames.Findrefbacktrack.Editor",
     "references": [
-        "SompomGames.Template"
+        "SompomGames.Findrefbacktrack"
     ],
     "includePlatforms": [
         "Editor"
