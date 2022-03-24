@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using UnityEditor;
  public class BacktraceReference : EditorWindow
  {
+     private static BacktraceReference _myWindow;
+     
      /// <summary> The result </summary>
      public static List<Component> ReferencingSelection = new List<Component>();
      /// <summary> allComponents in the scene that will be searched to see if they contain the reference </summary>
@@ -19,7 +21,20 @@ using UnityEditor;
      {
          selections = UnityEditor.Selection.gameObjects;
          BacktraceSelection(selections);
-         GetWindow(typeof(BacktraceReference));
+         // GetWindow(typeof(BacktraceReference));
+         
+         if (_myWindow == null)
+         {
+             _myWindow = ScriptableObject.CreateInstance(typeof(BacktraceReference)) as BacktraceReference;
+             if (_myWindow != null)
+             {
+                 _myWindow.ShowUtility();
+             }
+         }
+         else
+         {
+             _myWindow.Focus();
+         }
      }
      /// <summary>
      /// Display referenced by components in window
@@ -100,8 +115,8 @@ using UnityEditor;
          //Debug.Log($"Dest references value : {references.name} {references.GetInstanceID()}");
          while (prop.NextVisible(true))
          {
-             // if (prop.objectReferenceValue != null)
-             //    Debug.Log($"objectReferenceValue : {prop.objectReferenceValue.GetInstanceID()}");
+             if (prop.propertyType == SerializedPropertyType.ObjectReference)
+                Debug.Log($"objectReferenceValue : {prop.name} {prop.objectReferenceInstanceIDValue}");
              
              bool isObjectField = prop.propertyType == SerializedPropertyType.ObjectReference && prop.objectReferenceValue != null;
              if (isObjectField ) 
