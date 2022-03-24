@@ -115,8 +115,8 @@ using UnityEditor;
          //Debug.Log($"Dest references value : {references.name} {references.GetInstanceID()}");
          while (prop.NextVisible(true))
          {
-             if (prop.propertyType == SerializedPropertyType.ObjectReference)
-                Debug.Log($"objectReferenceValue : {prop.name} {prop.objectReferenceInstanceIDValue}");
+             // if (prop.propertyType == SerializedPropertyType.ObjectReference)
+             //    Debug.Log($"objectReferenceValue : {prop.name} {prop.objectReferenceInstanceIDValue}");
              
              bool isObjectField = prop.propertyType == SerializedPropertyType.ObjectReference && prop.objectReferenceValue != null;
              if (isObjectField ) 
