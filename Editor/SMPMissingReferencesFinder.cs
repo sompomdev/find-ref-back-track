@@ -12,9 +12,10 @@ public class SMPMissingReferencesFinder
     public static void FindMaterialIssue()
     {
         var issueFound = 0;
+        var paths = SMPAssetDatabaseUtilEditor.GetMaterialPathsFromSelection();
         try
         {
-            var paths = SMPAssetDatabaseUtilEditor.GetMaterialPathsFromSelection();
+            
             var progress = 0;
             
             

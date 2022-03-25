@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -18,9 +20,11 @@ public class SMPAssetDatabaseUtilEditor
     private static string[] GetAssetPaths(int modeFilter)
     {
         var filter = "t:Prefab";
+        var ext = ".prefab";
         if (modeFilter == 2)
         {
             filter = "t:Material";
+            ext = ".mat";
         }
         var paths = new List<string>();
         if (UnityEditor.Selection.assetGUIDs.Length > 0)
@@ -53,8 +57,13 @@ public class SMPAssetDatabaseUtilEditor
                     paths.Add(selectedFolder);
                     // Debug.Log($"{selectedFolder}");
                 }
-                
             }
+        }
+        if (paths.Count <= 0)
+        {
+            var allAssets = AssetDatabase.GetAllAssetPaths()
+                .Where(s => s.EndsWith(ext, StringComparison.OrdinalIgnoreCase));
+            paths = allAssets.ToList();
         }
         return paths.ToArray();
     }
