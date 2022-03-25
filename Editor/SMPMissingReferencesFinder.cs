@@ -14,7 +14,7 @@ public class SMPMissingReferencesFinder
         var issueFound = 0;
         try
         {
-            var paths = SMPShaderUtilEditor.GetMaterialPathsFromSelection();
+            var paths = SMPAssetDatabaseUtilEditor.GetMaterialPathsFromSelection();
             var progress = 0;
             
             
@@ -50,57 +50,15 @@ public class SMPMissingReferencesFinder
     [MenuItem("Assets/Find missing references")]
     public static void FindMissingReferences()
     {
-        // UnityEngine.Object obj = Selection.activeObject;
-        // if (obj == null)
-        // {
-        //     return;
-        // }
-        //string path = AssetDatabase.GetAssetPath(obj.GetInstanceID());
-        //string[] objs = Directory.GetFiles(path, "*.prefab");
-        //var selectedFolder = UnityEditor.Selection.assetGUIDs[0];
-
         showInitialProgressBar("all assets");
-        var objs = GetPrefabPathsFromSelection();
+        var objs = SMPAssetDatabaseUtilEditor.GetPrefabPathsFromSelection();
         var wasCancelled = false;
         var count = findMissingReferences("Project", objs, () => { wasCancelled = false; }, () => { wasCancelled = true; });
         
         //showFinishDialog(wasCancelled, count);
         EditorUtility.ClearProgressBar();
     }
-
-    public static string[] GetPrefabPathsFromSelection()
-    {
-        var isSingleObjectOnly = false;
-        var paths = new List<string>();
-
-        if (Selection.activeObject != null)
-        {
-            var path = AssetDatabase.GetAssetPath(Selection.activeObject);
-            var obj = AssetDatabase.LoadAssetAtPath<Material>(path);
-            if (obj == null)
-            {
-                isSingleObjectOnly = false;
-            }
-            else
-            {
-                paths.Add(path);
-                isSingleObjectOnly = true;
-            }
-        }
-
-        if (!isSingleObjectOnly && UnityEditor.Selection.assetGUIDs.Length > 0)
-        {
-            var selectedFolder = UnityEditor.Selection.assetGUIDs[0];
-            selectedFolder = UnityEditor.AssetDatabase.GUIDToAssetPath(selectedFolder);
-            var results = AssetDatabase.FindAssets("t:Prefab", new[] { selectedFolder });
-            foreach (var g in results)
-            {
-                var path = AssetDatabase.GUIDToAssetPath(g);
-                paths.Add(path);
-            }
-        }
-        return paths.ToArray();
-    }
+    
 
     private static GameObject[] LoadAllPrefabs(string path)
     {
