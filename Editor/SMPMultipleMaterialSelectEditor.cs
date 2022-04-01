@@ -6,6 +6,20 @@ using UnityEngine;
 
 public class SMPMultipleMaterialSelectEditor : Editor
 {
+    [MenuItem("Assets/Sompom/Mat render queue?")]
+    public static void CheckingMaterialRenderQueue()
+    {
+        var paths = SMPAssetDatabaseUtilEditor.GetMaterialPathsFromSelection();
+        foreach (var path in paths)
+        {
+            //Debug.Log($"Path : {path}");
+            var obj = AssetDatabase.LoadAssetAtPath(path, typeof(Material)) as Material;
+            if (obj != null)
+            {
+                Debug.Log($"Render queue : {obj.renderQueue}");
+            }
+        }
+    }
     [MenuItem("Assets/Sompom/Update Enemy Shaders to Original Spine")]
     public static void UpdateEnemyShaderSpineOriginal()
     {
